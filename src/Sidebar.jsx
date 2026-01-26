@@ -12,51 +12,58 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import logo from "./assets/logo.jpg";
-import { Typography } from "@mui/material";
+import { AppBar, Paper, Toolbar, Typography } from "@mui/material";
+import { useState } from "react";
+import RegistrationForm from "./Registration";
 
 export default function TemporaryDrawer() {
-  const [open, setOpen] = React.useState(true);
-
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
-  };
+  const drawerWidth = 250;
 
   const DrawerList = (
-    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+    <>
       <Box
-        p={1}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        sx={{ width: drawerWidth }}
+        role="presentation"
+        // onClick={toggleDrawer(false)}
       >
         <Box
-          component="img"
-          src={logo}
-          alt="Logo"
+          p={1}
           sx={{
-            height: 100,
-            width: "auto",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
           }}
-        />
+        >
+          <Box
+            component="img"
+            src={logo}
+            alt="Logo"
+            sx={{
+              height: 100,
+              width: "auto",
+            }}
+          />
 
-        <Typography sx={{ pt: 1 }} align="center" variant="p">
-          Republic of the Philippines
-        </Typography>
-        <Typography align="center" variant="p">
-          Province of Cebu
-        </Typography>
-        <Typography align="center" variant="p">
-          City of Talisay
-        </Typography>
-      </Box>
-      <Divider />
-      <List>
-        {["Registration", "Starred", "Send email", "Drafts"].map(
-          (text, index) => (
-            <ListItem key={text} disablePadding>
+          <Typography sx={{ pt: 1 }} align="center" component="p">
+            Republic of the Philippines
+          </Typography>
+          <Typography align="center" component="p">
+            Province of Cebu
+          </Typography>
+          <Typography align="center" component="p">
+            City of Talisay
+          </Typography>
+        </Box>
+        <Divider />
+        <List>
+          {[
+            "Registration",
+            "Document Custody System",
+            "Send email",
+            "Drafts",
+          ].map((text, index) => (
+            <ListItem key={text} disablePadding sx={{ ml: 2 }}>
               <ListItemButton>
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -64,33 +71,24 @@ export default function TemporaryDrawer() {
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
-          ),
-        )}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {["All mail", "Trash", "Spam"].map((text, index) => (
+            <ListItem key={text} disablePadding sx={{ ml: 2 }}>
+              <ListItemButton>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </>
   );
 
-  return (
-    <div>
-      <Button onClick={toggleDrawer(true)}>
-        <MenuIcon />
-      </Button>
-      <Drawer open={open} onClose={toggleDrawer(false)}>
-        {DrawerList}
-      </Drawer>
-    </div>
-  );
+  return <Paper>{DrawerList}</Paper>;
 }
