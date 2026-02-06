@@ -1,14 +1,28 @@
+:root {
+  --primary-bg-color: #0f0e17;
+  --secondary-bg-color: #132136;
+  --primary-text: #ffffff;
+  --primary-button-bg: #ff8906;
+  --primary-button-active: #29273b;
+  --primary-border-color: #d9d9d9;
+}
+
 *,
 body {
   margin: 0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+  /* font-family:
+    -apple-system, BlinkMacSystemFont, "Poppins", "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
+  font-family: "Poppins", sans-serif !important;
+}
+
+body {
+  background-color: var(--primary-bg-color);
+  /* color: var(--primary-text); */
 }
 
 code {
