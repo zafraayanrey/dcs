@@ -3,7 +3,9 @@ import {
   Badge,
   Box,
   Button,
+  MenuItem,
   Paper,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -12,49 +14,64 @@ import { Controller, useForm } from "react-hook-form";
 
 const inputFields = [
   {
+    name: "date",
     label: "Date",
     placeHolder: "Date",
-    name: "date",
+    type: "date",
   },
   {
+    name: "fName",
     label: "Name of Applicant",
     placeHolder: "First Name",
-    name: "fName",
+    type: "",
   },
   {
+    name: "mName",
     label: "",
     placeHolder: "Middle Name",
-    name: "mName",
+    type: "",
   },
   {
+    name: "lName",
     label: "",
     placeHolder: "Last Name",
-    name: "lName",
+    type: "",
   },
   {
+    name: "suffix",
     label: "",
     placeHolder: "Suffix",
-    name: "suffix",
+    type: "",
   },
   {
+    name: "appType",
     label: "Business Details",
     placeHolder: "Type of Application",
-    name: "appType",
+    type: "select",
+    options: [
+      "Zoning Certificate",
+      "Location Clearance for Business",
+      "Locational Clearance for Building",
+      "Fencing Permit",
+    ],
   },
   {
+    name: "street",
     label: "",
     placeHolder: "Street",
-    name: "street",
+    type: "",
   },
   {
+    name: "barangay",
     label: "",
     placeHolder: "Barangay",
-    name: "barangay",
+    type: "",
   },
   {
+    name: "city",
     label: "",
     placeHolder: "City",
-    name: "city",
+    type: "",
   },
 ];
 
@@ -66,6 +83,14 @@ function AppRegistration() {
   } = useForm({
     defaultValues: {
       email: "",
+      date: "",
+      fName: "",
+      lName: "",
+      suffix: "",
+      appType: "",
+      street: "",
+      barangay: "",
+      city: "",
     },
   });
 
@@ -78,7 +103,6 @@ function AppRegistration() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: 2,
       }}
     >
       {/*------------------------------Avatar with Badge------------------------------*/}
@@ -116,7 +140,7 @@ function AppRegistration() {
       <Paper
         sx={{
           m: "auto",
-          width: "80%",
+          width: "50%",
           p: 2,
           mt: 2,
           backgroundColor: "var(--primary-border-color)",
@@ -126,41 +150,64 @@ function AppRegistration() {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: "column",
               alignItems: "center",
-              gap: 2,
             }}
           >
             {inputFields.map((el, i) => (
               <Controller
+                key={i}
                 name={el.name}
                 control={control}
-                rules={{ required: `${el.name} is required` }}
-                sx={{ flex: 1 }}
+                rules={{
+                  required: `${el.placeHolder} is required`,
+                }}
                 render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label={el.placeHolder}
-                    fullWidth
-                    margin="normal"
-                    error={!!errors.email}
-                    helperText={errors.email?.message}
-                    size="small"
-                  />
+                  <>
+                    {el.type !== "select" ? (
+                      <TextField
+                        {...field}
+                        label={el.type === "date" ? "" : el.placeHolder}
+                        type={el.type}
+                        placeholder={el.placeHolder}
+                        fullWidth
+                        margin="normal"
+                        error={!!errors[el.name]}
+                        helperText={errors[el.name]?.message}
+                        size="small"
+                      />
+                    ) : (
+                      <Select
+                        {...field}
+                        label="Type of Application"
+                        placeholder={el.placeHolder}
+                        fullWidth
+                        size="small"
+                      >
+                        {el.options.map((opt, i) => (
+                          <MenuItem value={opt}>
+                            <em>{opt}</em>
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    )}
+                  </>
                 )}
               />
             ))}
           </Box>
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              backgroundColor: "var(--primary-button-bg)",
-              color: "var(--primary-bg-color)",
-            }}
-          >
-            Submit
-          </Button>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{
+                backgroundColor: "var(--primary-button-bg)",
+                color: "var(--primary-bg-color)",
+              }}
+            >
+              Submit
+            </Button>
+          </Box>
         </form>
       </Paper>
     </Box>
