@@ -3,14 +3,27 @@ import {
   Badge,
   Box,
   Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  FormLabel,
+  InputLabel,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
   MenuItem,
   Paper,
+  Radio,
+  RadioGroup,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { business, zoningCertificate } from "./requirements";
 
 const inputFields = [
   {
@@ -45,7 +58,7 @@ const inputFields = [
   },
   {
     name: "appType",
-    label: "Business Details",
+    label: "Type of Application",
     placeHolder: "Type of Application",
     type: "select",
     options: [
@@ -63,9 +76,33 @@ const inputFields = [
   },
   {
     name: "barangay",
-    label: "",
+    label: "Barangay",
     placeHolder: "Barangay",
-    type: "",
+    type: "select",
+    options: [
+      "Biasong",
+      "Bulacao",
+      "Camp IV",
+      "Candulawan",
+      "Cansojong",
+      "Dumlog",
+      "Jaclupan",
+      "Lagtang",
+      "Lawaan I",
+      "Lawaan II",
+      "Lawaan III",
+      "Linao",
+      "Maghaway",
+      "Manipis",
+      "Mohon",
+      "Poblacion",
+      "Pooc",
+      "San Isidro",
+      "San Roque",
+      "Tabunok",
+      "Tangke",
+      "Tapul",
+    ],
   },
   {
     name: "city",
@@ -75,6 +112,8 @@ const inputFields = [
   },
 ];
 
+const items = ["Admin", "Editor", "Viewer"];
+
 function AppRegistration() {
   const {
     control,
@@ -82,7 +121,6 @@ function AppRegistration() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "",
       date: "",
       fName: "",
       lName: "",
@@ -143,7 +181,6 @@ function AppRegistration() {
           width: "50%",
           p: 2,
           mt: 2,
-          backgroundColor: "var(--primary-border-color)",
         }}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -154,52 +191,104 @@ function AppRegistration() {
               alignItems: "center",
             }}
           >
-            {inputFields.map((el, i) => (
-              <Controller
-                key={i}
-                name={el.name}
-                control={control}
-                rules={{
-                  required: `${el.placeHolder} is required`,
-                }}
-                render={({ field }) => (
-                  <>
-                    {el.type !== "select" ? (
+            {inputFields.map((el) => (
+              <React.Fragment key={el.name}>
+                <Controller
+                  name={el.name}
+                  control={control}
+                  rules={{ required: `${el.placeHolder} is required` }}
+                  render={({ field }) =>
+                    el.type !== "select" ? (
                       <TextField
                         {...field}
-                        label={el.type === "date" ? "" : el.placeHolder}
-                        type={el.type}
-                        placeholder={el.placeHolder}
+                        label={el.placeHolder}
+                        type={el.type || "text"}
                         fullWidth
                         margin="normal"
+                        size="small"
                         error={!!errors[el.name]}
                         helperText={errors[el.name]?.message}
-                        size="small"
+                        InputLabelProps={
+                          el.type === "date" ? { shrink: true } : undefined
+                        }
                       />
                     ) : (
-                      <Select
-                        {...field}
-                        label="Type of Application"
-                        placeholder={el.placeHolder}
+                      <FormControl
                         fullWidth
                         size="small"
+                        margin="normal"
+                        error={!!errors[el.name]}
                       >
-                        {el.options.map((opt, i) => (
-                          <MenuItem value={opt}>
-                            <em>{opt}</em>
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    )}
-                  </>
-                )}
-              />
+                        <InputLabel id={`${el.name}-label`}>
+                          {el.placeHolder}
+                        </InputLabel>
+
+                        <Select
+                          {...field}
+                          labelId={`${el.name}-label`}
+                          label={el.placeHolder}
+                        >
+                          {el.options.map((opt) => (
+                            <MenuItem key={opt} value={opt}>
+                              {opt}
+                            </MenuItem>
+                          ))}
+                        </Select>
+
+                        <FormHelperText>
+                          {errors[el.name]?.message}
+                        </FormHelperText>
+                      </FormControl>
+                    )
+                  }
+                />
+              </React.Fragment>
             ))}
           </Box>
-          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Controller
+            name="requirements"
+            control={control}
+            defaultValue={[]} // IMPORTANT
+            render={({ field }) => (
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                }}
+              >
+                {business.map((item) => (
+                  <FormControlLabel
+                    key={item}
+                    control={
+                      <Checkbox
+                        checked={field.value.includes(item)}
+                        onChange={(e) => {
+                          const newValue = e.target.checked
+                            ? [...field.value, item]
+                            : field.value.filter((value) => value !== item);
+
+                          field.onChange(newValue);
+                        }}
+                      />
+                    }
+                    label={item}
+                  />
+                ))}
+
+                {errors.requirements && (
+                  <FormHelperText error>
+                    {errors.requirements.message}
+                  </FormHelperText>
+                )}
+              </Box>
+            )}
+          />
+
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
               type="submit"
               variant="contained"
+              fullWidth
               sx={{
                 backgroundColor: "var(--primary-button-bg)",
                 color: "var(--primary-bg-color)",
