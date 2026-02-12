@@ -7,23 +7,17 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
-  FormLabel,
   InputLabel,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
   MenuItem,
   Paper,
-  Radio,
-  RadioGroup,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { business, zoningCertificate } from "./requirements";
+import { business } from "./requirements";
+import { Man } from "@mui/icons-material";
 
 const inputFields = [
   {
@@ -112,17 +106,17 @@ const inputFields = [
   },
 ];
 
-const items = ["Admin", "Editor", "Viewer"];
-
 function AppRegistration() {
   const {
     control,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
       date: "",
       fName: "",
+      mName: "",
       lName: "",
       suffix: "",
       appType: "",
@@ -134,6 +128,8 @@ function AppRegistration() {
 
   const onSubmit = (data) => {
     console.log(data);
+    // reset form after submit
+    reset();
   };
 
   return (
